@@ -25,9 +25,7 @@ contract Auction {
         require(isActive, "auction has ended");
         require(msg.value > highestBid, "must be higher than current bud");
 
-        if (highestBidder != address(0)) {
-            bidders[highestBidder] += highestBid;
-        }
+        bidders[highestBidder] += highestBid;
 
         highestBidder = msg.sender;
         highestBid = msg.value;
@@ -42,21 +40,20 @@ contract Auction {
         );
         require(isActive, "Auction has already ended");
 
-        isActive = false; 
+        isActive = false;
 
         if (highestBidder != address(0)) {
-            payable(owner).transfer(highestBid); 
+            payable(owner).transfer(highestBid);
         }
 
-        emit AuctionEnd(highestBidder, highestBid); 
+        emit AuctionEnd(highestBidder, highestBid);
     }
 
     function withdraw() external {
-    uint256 amount = bidders[msg.sender];
-    require(amount > 0, "insufficient funds");
+        uint256 amount = bidders[msg.sender];
+        require(amount > 0, "insufficient funds");
 
-    bidders[msg.sender] = 0; 
-    payable(msg.sender).transfer(amount);
-}
-
+        bidders[msg.sender] = 0;
+        payable(msg.sender).transfer(amount);
+    }
 }
